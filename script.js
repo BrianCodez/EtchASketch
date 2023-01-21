@@ -1,16 +1,22 @@
 //const div = document.createElement('div');
 
+let slider = document.getElementById("myRange");
+let output = document.getElementById("demo");
+output.innerHTML = `Choose your grid size`;
+
+
 const container = document.getElementById('grid-container');
-let mouseDown = true;
-document.body.onmousedown = () => (mouseDown = true)
-document.body.onmouseup = () => (mouseDown = false)
 
 
 
-function makeGrid(rows, cols){
-    container.style.setProperty("--grid-rows",rows);
-    container.style.setProperty("--grid-cols",cols);
-    for(c = 0; c < (rows * cols); c++){
+
+function makeGrid(gridNumber){
+    
+    let gridArea = gridNumber * gridNumber
+    container.style.setProperty("--grid-rows",gridNumber);
+    container.style.setProperty("--grid-cols",gridNumber);
+    //makes the grid and appends the grid items to it
+    for(c = 0; c < (gridArea); c++){
         let cell = document.createElement("div");
         cell.classList.add("grid-item")
         cell.onmouseover = function(){
@@ -23,7 +29,22 @@ function makeGrid(rows, cols){
 }
 
 
-makeGrid(16,16);
+
+function pixelSize (){
+    let gridPixels = container.querySelectorAll('div');
+    //displays the current pixel size under the slider
+    slider.oninput = function() {
+        output.innerHTML = `Grid size ${this.value} x ${this.value}`;
+      }
+    gridPixels.forEach(gridPixel => gridPixel.remove());
+    makeGrid(slider.value);
+}
+
+
+makeGrid(5);
+
+//event listeners 
+slider.addEventListener('mouseup', pixelSize);
  
 /* function newGrid(num){
     container.style.setProperty('--grid-rows',num);
